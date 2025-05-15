@@ -1,6 +1,7 @@
 import pickle
 import streamlit as st
 import requests
+import lzma
 
 def fetch_poster(movie_id):
     try:
@@ -36,7 +37,8 @@ def recommend(movie):
 
 st.header('Movie Recommender System')
 movies = pickle.load(open('movie_list.pkl','rb'))
-similarity = pickle.load(open('similarity.pkl','rb'))
+with lzma.open('similarity.pkl.xz', 'rb') as f:
+    similarity = pickle.load(f)
 
 movie_list = movies['title'].values
 selected_movie = st.selectbox(
